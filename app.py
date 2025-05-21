@@ -15,6 +15,7 @@
 import signal
 import sys
 from types import FrameType
+import json
 
 from flask import Flask
 
@@ -32,6 +33,28 @@ def hello() -> str:
     logger.info("Child logger with trace Id.")
 
     return "Hello, World!"
+
+
+@app.get("/profile/<profile_id>")
+def show_profile(profile_id):
+    try:
+        with open(f"data/profile-{profile_id}.json") as f:
+            data = json.load(f)
+
+        return data
+    except FileNotFoundError:
+        return {"error": "Profile not found."}, 404
+
+
+@app.get("/account/<account_id>")
+def show_account(account_id):
+    try:
+        with open(f"data/accounts-{account_id}.json") as f:
+            data = json.load(f)
+
+        return data
+    except FileNotFoundError:
+        return {"error": "Account not found."}, 404
 
 
 def shutdown_handler(signal_int: int, frame: FrameType) -> None:
