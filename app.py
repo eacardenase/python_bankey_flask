@@ -46,7 +46,7 @@ def show_profile(profile_id):
         return {"error": "Profile not found."}, 404
 
 
-@app.get("/account/<account_id>")
+@app.get("/profile/<account_id>/accounts")
 def show_account(account_id):
     try:
         with open(f"data/accounts-{account_id}.json") as f:
